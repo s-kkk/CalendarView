@@ -319,8 +319,9 @@ public class CalendarView extends FrameLayout {
         mWeekPager.setVisibility(GONE);
         mDelegate.isShowYearSelectedLayout = true;
         if (mParentLayout != null) {
-            mParentLayout.hideContentView();
+            mParentLayout.hideContentView(); // 隐藏内容布局
         }
+        // 年月份展示
         mWeekBar.animate()
                 .translationY(-mWeekBar.getHeight())
                 .setInterpolator(new LinearInterpolator())

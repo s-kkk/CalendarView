@@ -26,6 +26,9 @@ import com.haibin.calendarviewproject.simple.SimpleActivity;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 多彩风格
+ */
 public class SingleActivity extends BaseActivity implements
         CalendarView.OnCalendarSelectListener,
         CalendarView.OnYearChangeListener,
@@ -48,7 +51,7 @@ public class SingleActivity extends BaseActivity implements
     CalendarLayout mCalendarLayout;
     GroupRecyclerView mRecyclerView;
 
-    public static void show(Context context) {
+    public static void show(Context context) { // 跳转至该风格日历
         context.startActivity(new Intent(context, SingleActivity.class));
     }
 
@@ -221,7 +224,7 @@ public class SingleActivity extends BaseActivity implements
     }
 
     @Override
-    public void onCalendarInterceptClick(Calendar calendar, boolean isClick) {
+    public void onCalendarInterceptClick(Calendar calendar, boolean isClick) { // 对点击的有关拦截
         Toast.makeText(this,
                 calendar.toString() + (isClick ? "拦截不可点击" : "拦截滚动到无效日期"),
                 Toast.LENGTH_SHORT).show();

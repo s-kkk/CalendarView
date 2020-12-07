@@ -26,6 +26,9 @@ import com.haibin.calendarviewproject.simple.SimpleActivity;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 精致星系风格
+ */
 public class SolarActivity extends BaseActivity implements
         CalendarView.OnCalendarSelectListener,
         CalendarView.OnYearChangeListener,

@@ -24,11 +24,14 @@ import com.haibin.calendarviewproject.meizu.MeiZuActivity;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 简单风格日历
+ */
 public class SimpleActivity extends BaseActivity implements
         CalendarView.OnCalendarSelectListener,
         CalendarView.OnYearChangeListener,
         View.OnClickListener {
-
+    // TextView的在安卓中可以理解为一个文本视图控件，Android的视图控件的基类是View类，可以理解的TextView是View的子类
     TextView mTextMonthDay;
 
     TextView mTextYear;
@@ -37,15 +40,15 @@ public class SimpleActivity extends BaseActivity implements
 
     TextView mTextCurrentDay;
 
-    CalendarView mCalendarView;
+    CalendarView mCalendarView; // 基类CalendarView
 
-    RelativeLayout mRelativeTool;
+    RelativeLayout mRelativeTool; // 相对布局
 
-    GroupRecyclerView mRecyclerView;
+    GroupRecyclerView mRecyclerView; // 带分组浮动的RecyclerView
     private int mYear;
     CalendarLayout mCalendarLayout;
 
-    public static void show(Context context) {
+    public static void show(Context context) { // 跳转至该风格日历
         context.startActivity(new Intent(context, SimpleActivity.class));
     }
 
@@ -55,6 +58,9 @@ public class SimpleActivity extends BaseActivity implements
         return R.layout.activity_simple;
     }
 
+    /**
+     * 初始页面
+     */
     @SuppressLint("SetTextI18n")
     @Override
     protected void initView() {
@@ -67,13 +73,13 @@ public class SimpleActivity extends BaseActivity implements
         mTextCurrentDay = findViewById(R.id.tv_current_day);
         mTextMonthDay.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                if (!mCalendarLayout.isExpand()) {
+            public void onClick(View v) { // 监听器
+                if (!mCalendarLayout.isExpand()) { // 日历是否展开
                     mCalendarLayout.expand();
                     return;
                 }
-                mCalendarView.showYearSelectLayout(mYear);
-                mTextLunar.setVisibility(View.GONE);
+                mCalendarView.showYearSelectLayout(mYear); // 打开日历年月份快速选择
+                mTextLunar.setVisibility(View.GONE); // view不可见也不保留
                 mTextYear.setVisibility(View.GONE);
                 mTextMonthDay.setText(String.valueOf(mYear));
             }
@@ -81,25 +87,28 @@ public class SimpleActivity extends BaseActivity implements
         findViewById(R.id.fl_current).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCalendarView.scrollToCurrent();
+                mCalendarView.scrollToCurrent(); // 滚动到当前
             }
         });
 
         mCalendarLayout = findViewById(R.id.calendarLayout);
-        mCalendarView.setOnYearChangeListener(this);
-        mCalendarView.setOnCalendarSelectListener(this);
+        mCalendarView.setOnYearChangeListener(this); // 年份改变事件
+        mCalendarView.setOnCalendarSelectListener(this); // 日期选择事件
         mTextYear.setText(String.valueOf(mCalendarView.getCurYear()));
-        mYear = mCalendarView.getCurYear();
+        mYear = mCalendarView.getCurYear(); // 获取当前年 int
         mTextMonthDay.setText(mCalendarView.getCurMonth() + "月" + mCalendarView.getCurDay() + "日");
         mTextLunar.setText("今日");
         mTextCurrentDay.setText(String.valueOf(mCalendarView.getCurDay()));
         mRecyclerView = findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.addItemDecoration(new GroupItemDecoration<String,Article>());
-        mRecyclerView.setAdapter(new ArticleAdapter(this));
+        mRecyclerView.setAdapter(new ArticleAdapter(this)); // 设置适配器，新闻热点一类
         mRecyclerView.notifyDataSetChanged();
     }
 
+    /**
+     * 初始配置——标记哪些日期有事件
+     */
     @Override
     protected void initData() {
 
@@ -126,11 +135,14 @@ public class SimpleActivity extends BaseActivity implements
         map.put(getSchemeCalendar(year, month, 27, 0xFF13acf0, "多").toString(),
                 getSchemeCalendar(year, month, 27, 0xFF13acf0, "多"));
         //此方法在巨大的数据量上不影响遍历性能，推荐使用
-        mCalendarView.setSchemeDate(map);
+        mCalendarView.setSchemeDate(map); // 标记哪些日期有事件
 
     }
 
-
+    /**
+     * 不同风格的跳转
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -150,7 +162,7 @@ public class SimpleActivity extends BaseActivity implements
     }
 
     private Calendar getSchemeCalendar(int year, int month, int day, int color, String text) {
-        Calendar calendar = new Calendar();
+        Calendar calendar = new Calendar(); // 日历对象
         calendar.setYear(year);
         calendar.setMonth(month);
         calendar.setDay(day);
@@ -166,7 +178,7 @@ public class SimpleActivity extends BaseActivity implements
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onCalendarSelect(Calendar calendar, boolean isClick) {
+    public void onCalendarSelect(Calendar calendar, boolean isClick) { // 选择日历对象
         mTextLunar.setVisibility(View.VISIBLE);
         mTextYear.setVisibility(View.VISIBLE);
         mTextMonthDay.setText(calendar.getMonth() + "月" + calendar.getDay() + "日");
